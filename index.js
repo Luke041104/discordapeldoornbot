@@ -42,6 +42,16 @@ if(kickUser) return message.channel.send("Persoon die je wilt kicken is niet op 
 
 var reason = arguments.join(" ").slice(22);
 
+if(message.member.hasPermission("MANAGE_MESSAGES")) return message.channel.send("Sorry, jij kan geen personen kicken")
+
+if(kickUser.hasPermission("MANAGE_MESSAGES")) return message.channel.send("Deze persoon kan jij niet kicken")
+
+var kick = new RichEmbed()
+.setDescription("Kick")
+.setColor("#ee0000")
+.addfield("Kicked Gebruiker", kickUser)
+.addfield("Gekickt door", message.author)
+.addfield("Reden", reason)
 
   return;
 }
