@@ -32,6 +32,21 @@ bot.on("message", async message => {
 
   }
 
+if(command === `${prefix}kick`){
+
+//kick persoon reden.
+
+var kickUser = message.guild.member(message.mentions.users.first() || message.guild.members(arguments[0]));
+
+if(kickUser) return message.channel.send("Persoon die je wilt kicken is niet op de server")
+
+var reason = arguments.join(" ").slice(22);
+
+
+  return;
+}
+
+
 
 });
 
