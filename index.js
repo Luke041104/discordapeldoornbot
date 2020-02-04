@@ -6,17 +6,17 @@ const bot = new discord.Client();
 
 bot.on("ready", async () => {
 
-console.log(`${bot.user.username} is online!`);
+  console.log(`${bot.user.username} is online!`);
 
-bot.user.setActivity("Apeldoorn Roleplay", {type: "PLAYING"});
+  bot.user.setActivity("Apeldoorn Roleplay", { type: "PLAYING" });
 });
 
 
 bot.on("message", async message => {
 
-  if(message.author.bot) return;
+  if (message.author.bot) return;
 
-  if(message.channel.type === "dm") return;
+  if (message.channel.type === "dm") return;
 
   var prefix = botConfig.prefix;
 
@@ -26,45 +26,82 @@ bot.on("message", async message => {
 
   var arguments = messageArray.slice(1);
 
-  if(command ===  `${prefix}hallo`){
+  if (command === `${prefix}hallo`) {
 
     return message.channel.send("Hallo");
 
   }
 
-if(command === `${prefix}kick`){
+  if (command === `${prefix}kick`) {
 
-//kick persoon reden.
+    //kick persoon reden.
 
-var kickUser = message.guild.member(message.mentions.users.first() || message.guild.members(arguments[0]));
+    var kickUser = message.guild.member(message.mentions.users.first() || message.guild.members(arguments[0]));
 
-if(kickUser) return message.channel.send("Persoon die je wilt kicken is niet op de server")
+    if (kickUser) return message.channel.send("Persoon die je wilt kicken is niet op de server")
 
-var reason = arguments.join(" ").slice(22);
+    var reason = arguments.join(" ").slice(22);
 
-if(message.member.hasPermission("MANAGE_MESSAGES")) return message.channel.send("Sorry, jij kan geen personen kicken")
+    if (message.member.hasPermission("MANAGE_MESSAGES")) return message.channel.send("Sorry, jij kan geen personen kicken")
 
-if(kickUser.hasPermission("MANAGE_MESSAGES")) return message.channel.send("Deze persoon kan jij niet kicken")
+    if (kickUser.hasPermission("MANAGE_MESSAGES")) return message.channel.send("Deze persoon kan jij niet kicken")
 
-var kick = new discord.RichEmbed()
-.setDescription("Kick")
-.setColor("#ee0000")
-.addfield("Kicked Gebruiker", kickUser)
-.addfield("Gekickt door", message.author)
-.addfield("Reden", reason)
+    var kick = new discord.RichEmbed()
+      .setDescription("Kick")
+      .setColor("#ee0000")
+      .addfield("Gekickte Gebruiker", kickUser)
+      .addfield("Gekickt door", message.author)
+      .addfield("Reden", reason)
 
-var kickChannel = message.guild.find(`name`, "test");
-if (kickChannel) return message.guild.send("Kan het kanaal niet vinden");
+    var kickChannel = message.guild.find(`name`, "test");
+    if (kickChannel) return message.guild.send("Kan het kanaal niet vinden");
 
-message.guild.member(kickUser).kick(reason);
+    message.guild.member(kickUser).kick(reason);
 
-kickChannel.send(kick);
+    kickChannel.send(kick);
 
 
 
-  return;
-}
+    return;
+  }
 
+
+
+  if (command === `${prefix}ban`) {
+    //Ban persoon reden.
+
+    var banUser = message.guild.member(message.mentions.users.first() || message.guild.members(arguments[0]));
+
+    if (banUser) return message.channel.send("Persoon die je wilt bannen is niet op de server")
+
+    var reason = arguments.join(" ").slice(22);
+
+    if (message.member.hasPermission("MANAGE_MESSAGES")) return message.channel.send("Sorry, jij kan geen personen bannen")
+
+    if (banUser.hasPermission("MANAGE_MESSAGES")) return message.channel.send("Deze persoon kan jij niet bannen")
+
+    var ban = new discord.RichEmbed()
+      .setDescription("Ban")
+      .setColor("#ee0000")
+      .addfield("Verbannen Gebruiker", banUser)
+      .addfield("Verbannen door", message.author)
+      .addfield("Reden", reason)
+
+    var banChannel = message.guild.find(`name`, "test");
+    if (banChannel) return message.guild.send("Kan het kanaal niet vinden");
+
+    message.guild.member(banUser).ban(reason);
+
+    banChannel.send(ban);
+
+
+
+
+
+
+
+    return;
+  }
 
 
 });
