@@ -46,12 +46,21 @@ if(message.member.hasPermission("MANAGE_MESSAGES")) return message.channel.send(
 
 if(kickUser.hasPermission("MANAGE_MESSAGES")) return message.channel.send("Deze persoon kan jij niet kicken")
 
-var kick = new RichEmbed()
+var kick = new discord.RichEmbed()
 .setDescription("Kick")
 .setColor("#ee0000")
 .addfield("Kicked Gebruiker", kickUser)
 .addfield("Gekickt door", message.author)
 .addfield("Reden", reason)
+
+var kickChannel = message.guild.find(`name`, "test");
+if (kickChannel) return message.guild.send("Kan het kanaal niet vinden");
+
+message.guild.member(kickUser).kick(reason);
+
+kickChannel.send(kick);
+
+
 
   return;
 }
