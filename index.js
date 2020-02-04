@@ -9,7 +9,7 @@ bot.commands = new discord.Collection();
 
 fs.readdir("./commands/", (err, files) => {
 
-  if (error) console.log(err);
+  if (err) console.log(err);
 
   var jsFiles = files.filter(f => f.split(".").pop() === "js");
 
