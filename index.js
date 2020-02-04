@@ -1,7 +1,33 @@
 const discord = require("discord.js");
 const botConfig = require("./botconfig.json");
 
+const fs = require("fs");
+
+
 const bot = new discord.Client();
+bot.commands = new discord.Collection();
+
+fs.readdir("./commands/", (err, files) => {
+
+  if (error) console.log(err);
+
+  var jsFiles = files.filter(f => f.split(".").pop() === "js");
+
+  if (jsFiles.length <= 0) {
+    console.log("Kon geen files vinden");
+    return;
+  }
+
+  jsFiles.forEach((f, i) => {
+
+    var fileGet = require(`./commands/${f}`);
+    console.log(`De file ${f} is geladen`)
+
+    bot.commands.set(fileGet.help.name, fileGet);
+  })
+
+
+});
 
 
 bot.on("ready", async () => {
@@ -26,11 +52,17 @@ bot.on("message", async message => {
 
   var arguments = messageArray.slice(1);
 
-  if (command === `${prefix}hallo`) {
+  var commands = bot.commands.get(command.slice(prefix.length));
 
-    return message.channel.send("Hallo");
+  if(commands) commands.run(bot, message, arguments);
 
-  }
+
+
+ // if (command === `${prefix}test`) {
+
+  //  return message.channel.send("Hallo");
+
+ // }
 
   if (command === `${prefix}kick`) {
 
@@ -93,11 +125,6 @@ bot.on("message", async message => {
     message.guild.member(banUser).ban(reason);
 
     banChannel.send(ban);
-
-
-
-
-
 
 
     return;
